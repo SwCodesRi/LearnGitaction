@@ -37,9 +37,12 @@ jobs:
 
     steps:
       - name: Clean workspace before checkout
+        shell: 'powershell -ExecutionPolicy Bypass -NoProfile -NonInteractive'
         run: |
-          echo "Cleaning workspace..."
-          rm -rf $GITHUB_WORKSPACE/*
+          Write-Host "Cleaning workspace..."
+          if (Test-Path -Path $env:GITHUB_WORKSPACE) {
+            Remove-Item -LiteralPath "$env:GITHUB_WORKSPACE\*" -Recurse -Force
+          }
           
       - name: Checkout another repository
         uses: actions/checkout@v4
