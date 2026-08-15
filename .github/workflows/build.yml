@@ -11,6 +11,19 @@ name: Build, Pack and Publish to JFrog Artifactory
 # 8. Push the package to JFrog Artifactory using authenticated NuGet credentials.
 # This creates a complete CI/CD pipeline for a .NET solution.
 
+# on:
+#   repository_dispatch:
+#     types: [trigger-build]
+
+# From another repository (or script), you’d call the GitHub API:
+
+# bash
+# curl -X POST \
+#   -H "Accept: application/vnd.github+json" \
+#   -H "Authorization: Bearer YOUR_TOKEN" \
+#   https://api.github.com/repos/OWNER/REPO/dispatches \
+#   -d 
+
 on:
   push:
     branches:
@@ -20,6 +33,7 @@ on:
     branches:
       - main
       - master
+  
   workflow_dispatch:
 
 jobs:
@@ -78,19 +92,20 @@ jobs:
           dotnet build "${{ env.SOLUTION_PATH }}" --configuration "${{ env.CONFIGURATION }}"
 
 
+
       - name: Run unit tests
         run: |
           echo "Running tests to validate quality before packaging..."
           dotnet test "${{ env.SOLUTION_PATH }}" --configuration "${{ env.CONFIGURATION }}"
 
-      # - name: Pack NuGet package
-      #   run: |
-      #     echo "Packing the application into a NuGet package (.nupkg)..."
-      #     dotnet pack "${{ env.SOLUTION_PATH }}" \
-      #       --configuration "${{ env.CONFIGURATION }}" \
-      #       --no-build \
-      #       --output ./artifacts \
-      #       -p:PackageVersion=${{ env.PACKAGE_VERSION }}
+      - name: Pack NuGet package
+        run: |
+          echo "Packing the application into a NuGet package (.nupkg)..."
+          dotnet pack "${{ env.SOLUTION_PATH }}" \
+            --configuration "${{ env.CONFIGURATION }}" \
+            --no-build \
+            --output ./artifacts \
+            -p:PackageVersion=${{ env.PACKAGE_VERSION }}
 
       # - name: List generated package
       #   powershell: pwsh
