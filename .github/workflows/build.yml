@@ -1,0 +1,135 @@
+name: Build, Pack and Publish to JFrog Artifactory
+
+# Interview-focused explanation of the CI flow:
+# 1. Checkout source code from the repository.
+# 2. Install the .NET SDK required by the solution.
+# 3. Restore NuGet packages to make the build reproducible.
+# 4. Build in Release mode to validate compile-time correctness.
+# 5. Run tests to verify behavior before packaging.
+# 6. Pack the project into a NuGet package (.nupkg).
+# 7. Upload the generated package as a workflow artifact for traceability.
+# 8. Push the package to JFrog Artifactory using authenticated NuGet credentials.
+# This creates a complete CI/CD pipeline for a .NET solution.
+
+on:
+  push:
+    branches:
+      - main
+      - master
+  pull_request:
+    branches:
+      - main
+      - master
+  workflow_dispatch:
+
+jobs:
+  build-and-publish:
+    name: Build, Package, and Push to JFrog
+    runs-on: practrun
+
+    env:
+      DOTNET_VERSION: '8.0.x'
+      SOLUTION_PATH: './src/MySolution/MySolution.sln'   # Update this to your solution folder if needed.
+      CONFIGURATION: Release
+      PACKAGE_VERSION: ${{ github.run_number }}
+      JFROG_NUGET_URL: 'https://<your-jfrog-domain>/artifactory/api/nuget/v3/<repository-name>'
+      JFROG_REPO_NAME: '<repository-name>'
+
+    steps:
+      - name: Checkout another repository
+        uses: actions/checkout@v4
+        with:
+          repository: 'SwCodesRi/PracticeWork' # Pass the repo name here
+          ref: 'main'                         # Optional: Specify the branch, tag, or SHA
+          #token: ${{ secrets.PAT_TOKEN }}
+
+      - name: Print the cloned repo path
+        run: |
+           Write-Host "Repo cloned to: $env:GITHUB_WORKSPACE"
+           
+      # - name: Setup .NET SDK
+      #   uses: actions/setup-dotnet@v4
+      #   with:
+      #     dotnet-version: ${{ env.DOTNET_VERSION }}
+
+      # - name: Restore dependencies
+      #   powershell: pwsh
+      #   run: |
+      #     echo "Restoring NuGet packages for the solution..."
+      #     dotnet restore "${{ env.SOLUTION_PATH }}"
+
+      # - name: Build solution
+      #   powershell: pwsh
+      #   run: |
+      #     echo "Building the .NET solution in Release configuration..."
+      #     dotnet build "${{ env.SOLUTION_PATH }}" \
+      #       --configuration "${{ env.CONFIGURATION }}" \
+      #       --no-restore \
+      #       --verbosity minimal
+
+      # - name: Run unit tests
+      #   powershell: pwsh
+      #   run: |
+      #     echo "Running tests to validate quality before packaging..."
+      #     dotnet test "${{ env.SOLUTION_PATH }}" \
+      #       --configuration "${{ env.CONFIGURATION }}" \
+      #       --no-build \
+      #       --verbosity minimal
+
+      # - name: Pack NuGet package
+      #   powershell: pwsh
+      #   run: |
+      #     echo "Packing the application into a NuGet package (.nupkg)..."
+      #     dotnet pack "${{ env.SOLUTION_PATH }}" \
+      #       --configuration "${{ env.CONFIGURATION }}" \
+      #       --no-build \
+      #       --output ./artifacts \
+      #       -p:PackageVersion=${{ env.PACKAGE_VERSION }} \
+      #       --verbosity minimal
+
+      # - name: List generated package
+      #   powershell: pwsh
+      #   run: |
+      #     echo "Generated package files:"
+      #     ls -R ./artifacts
+
+      # - name: Upload package as workflow artifact
+      #   uses: actions/upload-artifact@v4
+      #   with:
+      #     name: dotnet-package
+      #     path: ./artifacts/*.nupkg
+      #     if-no-files-found: error
+
+      # - name: Publish to JFrog Artifactory
+      #   powershell: pwsh
+      #   env:
+      #     JFROG_USER: ${{ secrets.JFROG_USERNAME }}
+      #     JFROG_PASS: ${{ secrets.JFROG_PASSWORD }}
+      #   run: |
+      #     echo "Publishing the .nupkg file to JFrog Artifactory..."
+      #     if [ -z "${JFROG_USER}" ] || [ -z "${JFROG_PASS}" ]; then
+      #       echo "JFROG_USERNAME and JFROG_PASSWORD secrets are required."
+      #       exit 1
+      #     fi
+
+      #     # JFrog Artifactory NuGet feed URL example:
+      #     # https://<your-jfrog-domain>/artifactory/api/nuget/v3/<repository-name>
+      #     # dotnet nuget push requires a NuGet v3 source and valid credentials.
+      #     dotnet nuget add source "${{ env.JFROG_NUGET_URL }}" \
+      #       --name jfrog-artifactory \
+      #       --username "${JFROG_USER}" \
+      #       --password "${JFROG_PASS}" \
+      #       --store-password-in-clear-text
+
+      #     PACKAGE_FILE=$(ls ./artifacts/*.nupkg | head -n 1)
+      #     dotnet nuget push "$PACKAGE_FILE" \
+      #       --source jfrog-artifactory \
+      #       --api-key "${JFROG_PASS}" \
+      #       --skip-duplicate
+
+      # - name: CI summary
+      #   powershell: pwsh
+      #   run: |
+      #     echo "CI pipeline completed successfully."
+      #     echo "The solution was restored, built, tested, packed, and published to JFrog Artifactory."
+      #     echo "This is the standard interview-style DevOps flow used for .NET package delivery."
