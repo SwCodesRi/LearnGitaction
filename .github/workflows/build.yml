@@ -29,7 +29,7 @@ jobs:
 
     env:
       DOTNET_VERSION: '8.0.x'
-      SOLUTION_PATH: './src/MySolution/MySolution.sln'   # Update this to your solution folder if needed.
+      SOLUTION_PATH: '$env:GITHUB_WORKSPACE\ConsoleApp1\ConsoleApp1.slnx'   # Update this to your solution folder if needed.
       CONFIGURATION: Release
       PACKAGE_VERSION: ${{ github.run_number }}
       JFROG_NUGET_URL: 'https://<your-jfrog-domain>/artifactory/api/nuget/v3/<repository-name>'
@@ -63,8 +63,9 @@ jobs:
       - name: Restore dependencies
         run: |
           echo "Restoring NuGet packages for the solution..."
-          dotnet restore "$env:GITHUB_WORKSPACE\ConsoleApp1\ConsoleApp1.slnx"
-          
+          #dotnet restore "${{ env.SOLUTION_PATH }}"
+          nuget restore "${{ env.SOLUTION_PATH }}"
+
 
       # - name: Build solution
       #   powershell: pwsh
