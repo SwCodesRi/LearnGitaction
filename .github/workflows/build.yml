@@ -103,7 +103,7 @@ jobs:
           echo "Packing the application into a NuGet package (.nupkg)..."
 
           $msbuild = 'C:\Program Files\Microsoft Visual Studio\18\Insiders\MSBuild\Current\Bin\amd64\MSBuild.exe'
-          & $msbuild "$env:GITHUB_WORKSPACE\ConsoleApp1\ConsoleApp1\ConsoleApp1.csproj" /t:Pack /p:Configuration=Release /p:PackageVersion=${{ env.PACKAGE_VERSION }} /p:OutputPath=artifacts
+          & $msbuild "$env:GITHUB_WORKSPACE\ConsoleApp1\ConsoleApp1\ConsoleApp1.csproj" /p:Configuration=Release /p:PackageVersion=${{ env.PACKAGE_VERSION }} /p:OutputPath=artifacts
 
       # - name: List generated package
       #   powershell: pwsh
