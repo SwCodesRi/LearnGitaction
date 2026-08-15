@@ -61,7 +61,6 @@ jobs:
       #     dotnet-version: ${{ env.DOTNET_VERSION }}
 
       - name: Restore dependencies
-        powershell: pwsh
         run: |
           echo "Restoring NuGet packages for the solution..."
           dotnet restore "$env:GITHUB_WORKSPACE/ConsoleApp1/ConsoleApp1.sln"
