@@ -89,8 +89,10 @@ jobs:
       - name: Build solution
         run: |
           echo "Building the .NET solution in Release configuration..."
-          dotnet build "${{ env.SOLUTION_PATH }}" --configuration "${{ env.CONFIGURATION }}"
+          #dotnet build "${{ env.SOLUTION_PATH }}" --configuration "${{ env.CONFIGURATION }}"
 
+          $msbuild = 'C:\Program Files\Microsoft Visual Studio\18\Insiders\MSBuild\Current\Bin\amd64\MSBuild.exe'
+          & $msbuild "$env:GITHUB_WORKSPACE\ConsoleApp1\ConsoleApp1.slnx" /p:Configuration=Release 
 
 
       - name: Run unit tests
