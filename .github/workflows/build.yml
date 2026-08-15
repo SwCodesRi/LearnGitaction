@@ -59,12 +59,17 @@ jobs:
       #   uses: actions/setup-dotnet@v4
       #   with:
       #     dotnet-version: ${{ env.DOTNET_VERSION }}
-
-      - name: Restore dependencies
+      - name: Download nuget.exe and restore
         run: |
-          echo "Restoring NuGet packages for the solution..."
-          #dotnet restore "${{ env.SOLUTION_PATH }}"
-          nuget restore "${{ env.SOLUTION_PATH }}"
+          Invoke-WebRequest -Uri https://dist.nuget.org/win-x86-commandline/latest/nuget.exe -OutFile nuget.exe
+          .\nuget.exe restore "$env:GITHUB_WORKSPACE\ConsoleApp1\ConsoleApp1.slnx"
+  
+
+      # - name: Restore dependencies
+      #   run: |
+      #     echo "Restoring NuGet packages for the solution..."
+      #     #dotnet restore "${{ env.SOLUTION_PATH }}"
+      #     nuget restore "${{ env.SOLUTION_PATH }}"
 
 
       # - name: Build solution
