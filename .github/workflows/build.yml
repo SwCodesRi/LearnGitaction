@@ -39,7 +39,7 @@ jobs:
       - name: Checkout another repository
         uses: actions/checkout@v4
         with:
-          repository: 'SwCodesRi/PracticeWork' # Pass the repo name here
+          repository: 'PracticeWork' # Pass the repo name here
           ref: 'main'                         # Optional: Specify the branch, tag, or SHA
           #token: ${{ secrets.PAT_TOKEN }}
 
