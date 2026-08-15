@@ -36,6 +36,11 @@ jobs:
       JFROG_REPO_NAME: '<repository-name>'
 
     steps:
+      - name: Clean workspace before checkout
+        run: |
+          echo "Cleaning workspace..."
+          rm -rf $GITHUB_WORKSPACE/*
+          
       - name: Checkout another repository
         uses: actions/checkout@v4
         with:
