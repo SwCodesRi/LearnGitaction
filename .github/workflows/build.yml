@@ -101,10 +101,9 @@ jobs:
       - name: Pack NuGet package
         run: |
           echo "Packing the application into a NuGet package (.nupkg)..."
-          #dotnet pack "${{ env.SOLUTION_PATH }}" --configuration "${{ env.CONFIGURATION }}" --output ./artifacts
-          #dotnet publish "${{ env.SOLUTION_PATH }}" -c Release -o ./artifacts
-          "C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools\MSBuild\Current\Bin\MSBuild.exe" ConsoleApp1/ConsoleApp1/ConsoleApp1.csproj /p:Configuration=Release /p:OutDir=./artifacts
 
+          $msbuild = 'C:\Program Files\Microsoft Visual Studio\2022\BuildTools\MSBuild\Current\Bin\MSBuild.exe'
+          & $msbuild "$env:GITHUB_WORKSPACE\ConsoleApp1\ConsoleApp1\ConsoleApp1.csproj" /p:Configuration=Release /p:PackageVersion=${{ env.PACKAGE_VERSION }} /p:OutputPath=artifacts
 
       # - name: List generated package
       #   powershell: pwsh
