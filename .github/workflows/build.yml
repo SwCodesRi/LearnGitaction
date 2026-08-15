@@ -1,6 +1,6 @@
 name: Build, Pack and Publish to JFrog Artifactory
 
-# Interview-focused explanation of the CI flow:
+# Interview-focused explanation of the CI flow: 
 # 1. Checkout source code from the repository.
 # 2. Install the .NET SDK required by the solution.
 # 3. Restore NuGet packages to make the build reproducible.
@@ -46,7 +46,7 @@ jobs:
       - name: Print the cloned repo path
         run: |
            Write-Host "Repo cloned to: $env:GITHUB_WORKSPACE"
-           
+
       # - name: Setup .NET SDK
       #   uses: actions/setup-dotnet@v4
       #   with:
