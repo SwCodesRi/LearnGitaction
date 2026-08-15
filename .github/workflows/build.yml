@@ -76,7 +76,7 @@ jobs:
         run: |
           echo "Building the .NET solution in Release configuration..."
           dotnet build "${{ env.SOLUTION_PATH }}" \
-            --configuration "${{ env.CONFIGURATION }}" \
+            --configuration "${{ env.CONFIGURATION }}"
 
 
       # - name: Run unit tests
