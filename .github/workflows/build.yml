@@ -62,7 +62,7 @@ jobs:
       - name: Download nuget.exe and restore
         run: |
           Invoke-WebRequest -Uri https://dist.nuget.org/win-x86-commandline/latest/nuget.exe -OutFile nuget.exe
-          .\nuget.exe restore "$env:GITHUB_WORKSPACE\ConsoleApp1\ConsoleApp1.slnx"
+          .\nuget.exe restore ${{ env.SOLUTION_PATH }}
   
 
       # - name: Restore dependencies
@@ -72,14 +72,13 @@ jobs:
       #     nuget restore "${{ env.SOLUTION_PATH }}"
 
 
-      # - name: Build solution
-      #   powershell: pwsh
-      #   run: |
-      #     echo "Building the .NET solution in Release configuration..."
-      #     dotnet build "${{ env.SOLUTION_PATH }}" \
-      #       --configuration "${{ env.CONFIGURATION }}" \
-      #       --no-restore \
-      #       --verbosity minimal
+      - name: Build solution
+        powershell: pwsh
+        run: |
+          echo "Building the .NET solution in Release configuration..."
+          dotnet build "${{ env.SOLUTION_PATH }}" \
+            --configuration "${{ env.CONFIGURATION }}" \
+
 
       # - name: Run unit tests
       #   powershell: pwsh
