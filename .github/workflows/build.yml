@@ -101,11 +101,7 @@ jobs:
       - name: Pack NuGet package
         run: |
           echo "Packing the application into a NuGet package (.nupkg)..."
-          dotnet pack "${{ env.SOLUTION_PATH }}" \
-            --configuration "${{ env.CONFIGURATION }}" \
-            --no-build \
-            --output ./artifacts \
-            -p:PackageVersion=${{ env.PACKAGE_VERSION }}
+          dotnet pack "${{ env.SOLUTION_PATH }}" --configuration "${{ env.CONFIGURATION }}" --output ./artifacts -p:PackageVersion=${{ env.PACKAGE_VERSION }}
 
       # - name: List generated package
       #   powershell: pwsh
