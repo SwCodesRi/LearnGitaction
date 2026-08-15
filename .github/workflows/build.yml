@@ -98,7 +98,7 @@ jobs:
       - name: Run unit tests
         run: |
           echo "Running tests to validate quality before packaging..."
-          dotnet test "${{ env.SOLUTION_PATH }}" --configuration "${{ env.CONFIGURATION }}"
+          dotnet test "${{ env.SOLUTION_PATH }}" --configuration "${{ env.CONFIGURATION }}" --logger "trx;LogFileName=dotnet_tests.trx"
 
       - name: Pack NuGet package
         run: |
