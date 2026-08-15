@@ -46,25 +46,25 @@ jobs:
       - name: Checkout another repository
         uses: actions/checkout@v4
         with:
-          repository: 'SwCodesRi/PracticeWork' # Pass the repo name here
+          repository: 'SwCodesRi/TearnDotnetSolution' # Pass the repo name here
           ref: 'master'                         # Optional: Specify the branch, tag, or SHA
           #token: ${{ secrets.PAT_TOKEN }}
 
       - name: Print the cloned repo path
         run: |
            Write-Host "Repo cloned to: $env:GITHUB_WORKSPACE"
-           
+
 
       # - name: Setup .NET SDK
       #   uses: actions/setup-dotnet@v4
       #   with:
       #     dotnet-version: ${{ env.DOTNET_VERSION }}
 
-      # - name: Restore dependencies
-      #   powershell: pwsh
-      #   run: |
-      #     echo "Restoring NuGet packages for the solution..."
-      #     dotnet restore "${{ env.SOLUTION_PATH }}"
+      - name: Restore dependencies
+        powershell: pwsh
+        run: |
+          echo "Restoring NuGet packages for the solution..."
+          dotnet restore "${{ $env:GITHUB_WORKSPACE }}/ConsoleApp1/ConsoleApp1.sln"
 
       # - name: Build solution
       #   powershell: pwsh
