@@ -37,7 +37,6 @@ jobs:
 
     steps:
       - name: Clean workspace before checkout
-        shell: 'powershell -ExecutionPolicy Bypass -NoProfile -NonInteractive'
         run: |
           Write-Host "Cleaning workspace..."
           if (Test-Path -Path $env:GITHUB_WORKSPACE) {
